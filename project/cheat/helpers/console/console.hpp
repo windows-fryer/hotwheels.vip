@@ -1,0 +1,10 @@
+//
+// Created by Liga on 6/21/2022.
+//
+
+#ifndef HOTWHEELS_BF4_CONSOLE_HPP
+#define HOTWHEELS_BF4_CONSOLE_HPP
+
+
+
+#endif // HOTWHEELS_BF4_CONSOLE_HPP
