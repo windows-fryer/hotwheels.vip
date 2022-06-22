@@ -9,16 +9,13 @@ using namespace entry;
 
 void impl::init( )
 {
-	auto thread_handle = create_thread( cheat::impl::init );
+	auto thread_handle = create_thread( g_cheat.init );
 
 	if ( thread_handle )
 		close_handle( thread_handle );
 }
 
-void impl::shutdown( )
-{
-
-}
+void impl::shutdown( ) { }
 
 bool win_api dll_main( hinstance module_handle, std::uintptr_t reason_for_call, void* reserved )
 {

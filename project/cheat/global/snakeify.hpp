@@ -11,7 +11,7 @@
 #define fnv( string )                    fnv::hash( string )
 #define get_proc_address( module, name ) GetProcAddress( module, name )
 #define get_module_handle( name )        GetModuleHandle( name )
-#define set_window_long                  SetWindowLongA
+#define set_window_long                  SetWindowLongPtrW
 #define find_window                      FindWindowA
 #define call_window_proc                 CallWindowProcA
 #define free_library_and_exit_thread     FreeLibraryAndExitThread

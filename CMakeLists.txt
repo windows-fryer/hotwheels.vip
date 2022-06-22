@@ -10,22 +10,26 @@ file(GLOB_RECURSE SRC
         "project/*.hpp" ,
         "project/*.c" ,
         "project/*.cpp" ,
+        "project/*.inl" ,
         "project/**/*.h" ,
         "project/**/*.hpp" ,
         "project/**/*.c" ,
+        "project/**/*.cc" ,
         "project/**/*.cpp" ,
+        "project/**/*.inl" ,
         )
 
 
 add_library(${PROJECT_NAME} SHARED ${SRC})
 
-find_library(D3D9_LIBRARY d3d9.lib PATHS "$ENV{DXSDK_DIR}/Lib/x86")
-find_library(D3DX9_LIBRARY d3dx9.lib PATHS "$ENV{DXSDK_DIR}/Lib/x86")
+find_library(FREETYPE_LIBRARY freetype.lib PATHS "project/dependencies/freetype")
 
-target_link_libraries(${PROJECT_NAME} "${D3D9_LIBRARY}" "${D3DX9_LIBRARY}")
+message(${FREETYPE_LIBRARY})
 
-link_directories("$ENV{DXSDK_DIR}/Lib/x86")
-include_directories("$ENV{DXSDK_DIR}/Include")
+target_link_libraries(${PROJECT_NAME} "${FREETYPE_LIBRARY}")
+
+target_link_directories(${PROJECT_NAME} PRIVATE "project/dependencies/freetype")
+target_include_directories(${PROJECT_NAME} PRIVATE "project/dependencies/freetype/include")
 
 #add_definitions(/MP)
 #add_compile_options(/DEBUG FULL)
