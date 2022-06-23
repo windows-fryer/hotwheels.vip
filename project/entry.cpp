@@ -4,6 +4,8 @@
 
 #include "entry.hpp"
 #include "cheat/cheat.hpp"
+#include "cheat/helpers/console/console.hpp"
+#include "cheat/hooks/hooks.hpp"
 
 using namespace entry;
 
@@ -15,7 +17,11 @@ void impl::init( )
 		close_handle( thread_handle );
 }
 
-void impl::shutdown( ) { }
+void impl::shutdown( )
+{
+	g_hooks.shutdown( );
+	console::shutdown( );
+}
 
 bool win_api dll_main( hinstance module_handle, std::uintptr_t reason_for_call, void* reserved )
 {

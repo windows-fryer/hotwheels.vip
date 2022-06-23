@@ -1,5 +1,5 @@
-#ifndef WEDNESDAY_WTF_FNV_HPP
-#define WEDNESDAY_WTF_FNV_HPP
+#ifndef HOTWHEELS_BF4_FNV_HPP
+#define HOTWHEELS_BF4_FNV_HPP
 
 #include <iostream>
 #include <unordered_map>
@@ -58,4 +58,4 @@ namespace fnv1a
 	}
 } // namespace fnv1a
 
-#endif // WEDNESDAY_WTF_FNV_HPP
+#endif // HOTWHEELS_BF4_FNV_HPP
