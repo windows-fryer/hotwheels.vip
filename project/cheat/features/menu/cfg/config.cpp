@@ -268,5 +268,9 @@ std::filesystem::path c::get_working_path( )
 		CoTaskMemFree( path_to_documents );
 	}
 
+	if ( not std::filesystem::is_directory( fs_working_path ) ) {
+		std::filesystem::create_directories( fs_working_path );
+	}
+
 	return fs_working_path;
 }

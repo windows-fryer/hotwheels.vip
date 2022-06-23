@@ -17,6 +17,10 @@ namespace hooks
 		{
 			wndproc_hook = reinterpret_cast< WNDPROC >(
 				set_window_long( find_window( nullptr, "Battlefield 4" ), GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( wndproc_detour ) ) );
+
+			console::log( "[HOOKS] " );
+
+			console::log< fmt::color::cyan >( "Created hook [ {} ]\n", "wndproc_detour" );
 		}
 
 		static void shutdown( )

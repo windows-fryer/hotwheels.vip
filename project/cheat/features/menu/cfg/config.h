@@ -60,7 +60,7 @@ namespace c
 	std::size_t get_variable_index( const fnv1a_t name_hash );
 	std::filesystem::path get_working_path( );
 
-	const std::filesystem::path fs_path                   = get_working_path( ) / "settings";
+	const std::filesystem::path fs_path                   = get_working_path( );
 	inline std::deque< std::string > vec_file_names       = { };
 	inline std::vector< variable_object_t > vec_variables = { };
 	inline std::string loaded_config_file_name            = { };

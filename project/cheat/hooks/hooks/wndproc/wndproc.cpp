@@ -10,8 +10,9 @@ long hooks::wndproc::wndproc_detour( HWND window, unsigned int message, WPARAM p
 	if ( message == WM_KEYDOWN && parameter == VK_INSERT )
 		gui::g_data.m_opened = !gui::g_data.m_opened;
 
-	if ( gui::g_data.m_initialised && gui::g_data.m_opened && ImGui_ImplWin32_WndProcHandler( window, message, parameter, long_parameter ) )
-		return 1L;
+	if ( gui::g_data.m_initialised && gui::g_data.m_opened ) {
+		ImGui_ImplWin32_WndProcHandler( window, message, parameter, long_parameter );
+	}
 
 	return call_window_proc( hooks::wndproc_hook, window, message, parameter, long_parameter );
 }

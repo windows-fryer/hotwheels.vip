@@ -80,6 +80,7 @@
 #define OFFSET_FIRSTTYPEINFO 0x1423E41B8
 #define OFFSET_GETENTITYLIST                                                                                                                         \
 	0x1407CD5D0 // \x48\x8B\x1D\x00\x00\x00\x00\x48\x85\xDB\x74\x0C\x48\x8B\x03\x48\x89\x05\x00\x00\x00\x00\xEB\x3F (not sure)
+#define OFFSET_PRE_FRAME 0x14094C670
 
 #define OFFSET_WEAPONSHOOTSPACE OFFSET_FIRING_WEAPON + 0x28
 
