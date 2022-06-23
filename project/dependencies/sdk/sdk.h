@@ -1,7 +1,7 @@
 #pragma once
 #include <SDKDDKVer.h>
-#include <Windows.h>
 #include <TlHelp32.h>
+#include <Windows.h>
 #include <d3d11.h>
 #include <wrl/client.h>
 

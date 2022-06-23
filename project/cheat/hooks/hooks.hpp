@@ -26,7 +26,9 @@ namespace hooks
 			if ( MH_CreateHook( ( void* )source, ( void* )destination, &original ) != MH_OK ) {
 				console::log( "[HOOKS] " );
 
-				console::log< fmt::color::red >( "Failed to create hook [ {} ]\n", name );
+				console::color::red( );
+				console::log( "Failed to create hook [ {} ]\n", name );
+				console::color::white( );
 
 				return;
 			}
@@ -35,7 +37,9 @@ namespace hooks
 
 			console::log( "[HOOKS] " );
 
-			console::log< fmt::color::cyan >( "Created hook [ {} ]\n", name );
+			console::color::cyan( );
+			console::log( "Created hook [ {} ]\n", name );
+			console::color::white( );
 		}
 
 		void disable( )

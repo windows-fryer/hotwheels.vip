@@ -87,21 +87,74 @@ struct variables_t {
 	c_add_variable( bool, menu_fade, true );
 
 	/* logging */
+	c_add_variable( color, color_log_prefix, color( 254, 199, 255 ) );
+	c_add_variable( bool, log_config_print, false );
+	c_add_variable( color, color_log_config_print, color( 255, 255, 255 ) );
 
 	/* misc */
+	c_add_variable( bool, custom_netgraph, true );
+	c_add_variable( color, color_custom_netgraph, color( 229, 229, 178 ) );
 	c_add_variable( bool, misc_discord_rpc, true );
 
 	/* visuals */
+
 	/* world */
+
 	/* screen */
+
 	/* player chams */
+	c_add_variable( bool, chams_visible, false );
+	c_add_variable( color, chams_visible_color, color( 255, 255, 255 ) );
+
+	c_add_variable( bool, chams_visible_overlay, false );
+	c_add_variable( color, chams_visible_overlay_color, color( 255, 255, 255 ) );
+
+	c_add_variable( bool, chams_invisible, false );
+	c_add_variable( color, chams_invisible_color, color( 255, 255, 255 ) );
+
+	c_add_variable( bool, chams_invisible_overlay, false );
+	c_add_variable( color, chams_invisible_overlay_color, color( 255, 255, 255 ) );
+
+	c_add_variable( int, chams_overlay_material, 0 );
+
+	c_add_variable( int, chams_material, 0 );
+	c_add_variable( bool, chams_wireframe, false );
+	c_add_variable( bool, chams_render_original, false );
+
 	/* weapon chams */
+	c_add_variable( bool, chams_weapon, false );
+	c_add_variable( color, chams_weapon_color, color( 255, 255, 255 ) );
+
+	c_add_variable( bool, chams_weapon_overlay, false );
+	c_add_variable( color, chams_weapon_overlay_color, color( 255, 255, 255 ) );
+	c_add_variable( int, chams_overlay_weapon_material, 0 );
+
+	c_add_variable( int, chams_weapon_material, 0 );
+	c_add_variable( bool, chams_weapon_wireframe, false );
+	c_add_variable( bool, chams_weapon_render_original, false );
+
 	/* arm chams */
+	c_add_variable( bool, chams_arm, false );
+	c_add_variable( color, chams_arm_color, color( 255, 255, 255 ) );
+
+	c_add_variable( bool, chams_arm_overlay, false );
+	c_add_variable( color, chams_arm_overlay_color, color( 255, 255, 255 ) );
+	c_add_variable( int, chams_overlay_arm_material, 0 );
+
+	c_add_variable( int, chams_arm_material, 0 );
+	c_add_variable( bool, chams_arm_wireframe, false );
+	c_add_variable( bool, chams_arm_render_original, false );
+
 	/* esp */
+	c_add_variable( bool, esp_spectators_list, false );
+	c_add_variable( color, color_esp_spectators_list_spectating_local, color( 255, 255, 255 ) );
+	c_add_variable( color, color_esp_spectators_list_spectating_other, color( 255, 255, 255 ) );
+
 	/* player glow */
 	/* entity glow */
 	/* misc */
 	/* exploits */
+	c_add_variable( bool, sv_pure_bypass, false );
 	/* movement */
 };
 

@@ -15,9 +15,6 @@ namespace hooks
 {
 	CREATE_HOOK_HELPER( present_hook, long( IDXGISwapChain* self, UINT sync_interval, UINT flags ), long );
 
-	inline bool screenshot_running = false;
-	inline bool ran_present = false;
-
 	struct present {
 		static long present_detour( IDXGISwapChain* self, UINT sync_interval, UINT flags );
 

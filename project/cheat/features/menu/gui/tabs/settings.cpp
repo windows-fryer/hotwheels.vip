@@ -1,6 +1,5 @@
 #include "../../../dependencies/imgui/imgui.h"
 #include "../../../dependencies/imgui/cpp/imgui_stdlib.h"
-
 #include "../gui.h"
 #include "../helpers/helpers.h"
 
@@ -31,7 +30,7 @@ void gui::tabs::settings( )
 
 		current_config_name = !c::vec_file_names.empty( ) ? c::vec_file_names.at( gui::g_data.m_selected_config ) : "";
 
-		ImGui::InputTextWithHint( "##config.file", "enter file name", &gui::g_data.config_file );
+//		ImGui::InputTextWithHint( "##config.file", "enter file name", &gui::g_data.config_file );
 
 		ImGui::PopStyleVar( );
 		ImGui::PopItemWidth( );
@@ -61,6 +60,14 @@ void gui::tabs::settings( )
 			c::refresh( );
 
 		ImGui::Checkbox( "menu fade", &c::get< bool >( vars.menu_fade ), 8 );
+
+		/* todo - check for edge bug logs / jump bug logs and more */
+		if ( c::get< bool >( vars.log_config_print ) )
+			gui::helpers::render_color_picker( "logs prefix color", &c::get< color >( vars.color_log_prefix ), true, 19, true );
+
+		ImGui::Checkbox( "config logs", &c::get< bool >( vars.log_config_print ), 8 );
+		if ( c::get< bool >( vars.log_config_print ) )
+			gui::helpers::render_color_picker( "config logs color", &c::get< color >( vars.color_log_config_print ), false, 19, false );
 
 		ImGui::Checkbox( "discord rich presence", &c::get< bool >( vars.misc_discord_rpc ), 8 );
 
