@@ -1,5 +1,5 @@
-#ifndef WEDNESDAY_WTF_WNDPROC_HPP
-#define WEDNESDAY_WTF_WNDPROC_HPP
+#ifndef HOTWHEELS_BF4_WNDPROC_HPP
+#define HOTWHEELS_BF4_WNDPROC_HPP
 
 #include <Windows.h>
 
@@ -26,4 +26,4 @@ namespace hooks
 	};
 } // namespace hooks
 
-#endif // WEDNESDAY_WTF_WNDPROC_HPP
+#endif // HOTWHEELS_BF4_WNDPROC_HPP

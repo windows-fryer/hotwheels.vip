@@ -15,8 +15,8 @@ namespace entry
 	struct impl {
 		hinstance module_handle;
 
-		void init( );
-		void shutdown( );
+		static void init( );
+		static void shutdown( );
 	};
 } // namespace entry
 
