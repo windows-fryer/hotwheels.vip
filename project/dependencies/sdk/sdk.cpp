@@ -1,3 +1,6 @@
+#include <Windows.h>
+#include <TlHelp32.h>
+
 #include "sdk.h"
 
 VehicleData::VehicleType VehicleData::GetVehicleType( )

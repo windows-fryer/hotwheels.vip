@@ -1,0 +1,8 @@
+//
+// Created by Liga on 6/23/2022.
+//
+
+#ifndef HOTWHEELS_BF4_GLOBALS_HPP
+#define HOTWHEELS_BF4_GLOBALS_HPP
+
+#endif // HOTWHEELS_BF4_GLOBALS_HPP

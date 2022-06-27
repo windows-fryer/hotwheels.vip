@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <Windows.h>
+#include <TlHelp32.h>
 
 //https://github.com/stevemk14ebr/BF4-AtomBot/tree/master/BF4%20AtomBot/Engine
 

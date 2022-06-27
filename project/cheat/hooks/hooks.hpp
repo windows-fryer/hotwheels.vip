@@ -52,8 +52,8 @@ namespace hooks
 
 	struct impl {
 	public:
-		void init( );
-		void shutdown( );
+		static void init( );
+		static void shutdown( );
 	};
 } // namespace hooks
 

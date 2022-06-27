@@ -1,6 +1,6 @@
 #pragma once
-#include <SDKDDKVer.h>
 #include <Windows.h>
+
 #include <TlHelp32.h>
 #include <d3d11.h>
 #include <wrl/client.h>
@@ -116,6 +116,8 @@ inline bool IsValidPtrWithVTable( void* p )
 
 using namespace DirectX::SimpleMath;
 
+class PhysicsEntityBase;
+class RecoilData;
 class GameEntity;
 class DxRenderer;
 class Screen;
@@ -1863,53 +1865,53 @@ public:
 	virtual void Function25( ); //
 	virtual void Function26( ); //
 	virtual void Function27( );
-	virtual void Function28( );         //
-	virtual void Function29( );         //
-	virtual void Function30( );         //
-	virtual void Function31( );         //
-	virtual void Function32( );         //
-	virtual void Function33( );         //
-	virtual void Function34( );         //
-	virtual void Function35( );         //
-	virtual void Function36( );         //
-	virtual void Function37( );         //
-	virtual void Function38( );         //
-	virtual void Function39( );         //
-	virtual void Function40( );         //
-	virtual void Function41( );         //
-	virtual void Function42( );         //
-	virtual void Function43( );         //
-	virtual void Function44( );         //
-	virtual void Function45( );         //
-	virtual void Function46( );         //
-	virtual void Function47( );         //
-	virtual void Function48( );         //
-	virtual void Function49( );         //
-	virtual void Function50( );         //
-	virtual void Function51( );         //
-	virtual void Function52( );         //
-	virtual void Function53( );         //
-	virtual void Function54( );         //
-	virtual void Function55( );         //
-	virtual void Function56( );         //
-	virtual void Function57( );         //
-	virtual void Function58( );         //
-	virtual void Function59( );         //
-	virtual void* GetPhysiscsEntity( ); // physics
-	virtual Vector3* GetVelocity( );    // velocity
-	virtual void Function62( );         //
-	virtual void Function63( );         //
-	virtual void Function64( );         //
-	virtual void Function65( );         //
-	virtual void Function66( );         //
-	virtual void Function67( );         //
-	virtual void Function68( );         //
-	virtual void Function69( );         //
-	virtual void Function70( );         //
-	virtual void Function71( );         //
-	virtual void Function72( );         //
-	virtual void Function73( );         //
-	virtual void Function74( );         //
+	virtual void Function28( );                      //
+	virtual void Function29( );                      //
+	virtual void Function30( );                      //
+	virtual void Function31( );                      //
+	virtual void Function32( );                      //
+	virtual void Function33( );                      //
+	virtual void Function34( );                      //
+	virtual void Function35( );                      //
+	virtual void Function36( );                      //
+	virtual void Function37( );                      //
+	virtual void Function38( );                      //
+	virtual void Function39( );                      //
+	virtual void Function40( );                      //
+	virtual void Function41( );                      //
+	virtual void Function42( );                      //
+	virtual void Function43( );                      //
+	virtual void Function44( );                      //
+	virtual void Function45( );                      //
+	virtual void Function46( );                      //
+	virtual void Function47( );                      //
+	virtual void Function48( );                      //
+	virtual void Function49( );                      //
+	virtual void Function50( );                      //
+	virtual void Function51( );                      //
+	virtual void Function52( );                      //
+	virtual void Function53( );                      //
+	virtual void Function54( );                      //
+	virtual void Function55( );                      //
+	virtual void Function56( );                      //
+	virtual void Function57( );                      //
+	virtual void Function58( );                      //
+	virtual void Function59( );                      //
+	virtual PhysicsEntityBase* GetPhysiscsEntity( ); // physics
+	virtual Vector3* GetVelocity( );                 // velocity
+	virtual void Function62( );                      //
+	virtual void Function63( );                      //
+	virtual void Function64( );                      //
+	virtual void Function65( );                      //
+	virtual void Function66( );                      //
+	virtual void Function67( );                      //
+	virtual void Function68( );                      //
+	virtual void Function69( );                      //
+	virtual void Function70( );                      //
+	virtual void Function71( );                      //
+	virtual void Function72( );                      //
+	virtual void Function73( );                      //
+	virtual void Function74( );                      //
 
 	char _0x0000[ 10 ];             // 0x0008
 	unsigned char m_OcclusionFlags; // 0x0012
@@ -1924,6 +1926,67 @@ public:
 
 	bool IsAlive( );
 }; // Size=0x0148
+
+class PhysicsEntityBase
+{
+public:
+	virtual TypeInfo* getType( );
+	virtual void deconstructor( );                            //
+	virtual void addToWorld( );                               //
+	virtual void removeFromWorld( );                          //
+	virtual void Function4( );                                //
+	virtual void Function5( );                                //
+	virtual void Function6( );                                //
+	virtual void Function7( );                                //
+	virtual void Function8( );                                //
+	virtual void Function9( );                                //
+	virtual void Function10( );                               //
+	virtual void Function11( );                               //
+	virtual void Function12( );                               //
+	virtual void Function13( );                               //
+	virtual void Function14( );                               //
+	virtual void Function15( );                               //
+	virtual void Function16( );                               //
+	virtual void Function17( );                               //
+	virtual void Function18( );                               //
+	virtual void GetAABB( TransformAABBStruct* transaabb );   // Physics virtual 19
+	virtual void GetMass( float& );                           //
+	virtual void GetAnotherMass( float& );                    //
+	virtual void GetTransform( LinearTransform* mTransform ); // Physics virtual 22
+	virtual void Function23( );                               // __m128i *__fastcall sub_140B11110(__int64 a1, __m128i *a2)
+	virtual void Function24( );                               // return a float
+	virtual Vector3* LinearVelocity( );                       // 25 signed __int64 __fastcall sub_140B0F7F0(__int64 a1)
+	virtual Vector3* AngularVelocity( );                      // // Returns the angular velocity around the center of mass, in World space.
+	/*virtual void Function27(); // n?
+	virtual void Function28(); // ret bool
+	virtual void Function29(); //
+	virtual unsigned int GetpartCount(); //Physics virtual 30
+	virtual void Function31(); //__int64 __fastcall sub_140B274B0(__int64 a1, int a2)
+	virtual unsigned int GetPartTransforms(fb::QuatTransform*); //Physics virtual 32 (return nbparts)
+	virtual void Function33(); //__int64 __fastcall sub_140B27110(__int64 a1, int a2)
+	virtual void Function34(); //__int64 __fastcall sub_140B27370(__int64 a1, __int64 a2, unsigned int a3)
+	virtual void Function35(); //__int64 __fastcall sub_140B27370(__int64 a1, __int64 a2, unsigned int a3)
+	virtual void Function36(); //__int64 __fastcall sub_140B27460(__int64 a1, unsigned int a2)
+	virtual void Function37(); //int __fastcall sub_140B2B310(__int64 a1, __int64 a2, __m128 *a3)*/
+
+	class PhysicsEntityUserData
+	{
+	public:
+		unsigned char* materialIndices;   // this+0x0
+		unsigned int* materialFlags;      // this+0x8
+		void* partsEnabled;               // this+0x10
+		unsigned int flags;               // this+0x18
+		float mass;                       // this+0x1C
+		unsigned short partCount;         // this+0x20
+		unsigned char materialCount;      // this+0x22
+		unsigned char pad[ 0x28 - 0x23 ]; // this+0x23
+	};                                    // size 0x28
+
+	char _0x0008[ 0x18 - 0x08 ];
+	void* /*Entity**/ m_Parententity;              // 0x0018 ex ClientVehicleEntity StaticModelEntity
+	class PhysicsEntityUserData m_physicsUserData; // 0x20
+	char _0x0038[ 0x70 - 0x48 ];
+};
 
 class ClientVehicleEntity : public ClientControllableEntity
 {
@@ -2339,7 +2402,7 @@ public:
 	char pad[ 0x80 ];
 	WeaponClass m_WeaponClass; // 0x80
 	                           // unsigned char _0x84[0x4];
-							   // Array<WeaponStateData> m_WeaponStates; // 0x88
+	                           // Array<WeaponStateData> m_WeaponStates; // 0x88
 	                           // WeaponFiringData* m_WeaponFiring; // 0x90
 	                           // WeaponData* m_CustomWeaponType; // 0x98
 	                           // GameAIWeaponData* m_AIData; // 0xa0
@@ -2966,13 +3029,28 @@ public:
 	GunSwayData* m_Data; // 0x0008
 };                       // Size=0x0010
 
+class RecoilData
+{
+public:
+	float m_MaxRecoilAngleX;        // 0x0
+	float m_MinRecoilAngleX;        // 0x4
+	float m_MaxRecoilAngleY;        // 0x8
+	float m_MinRecoilAngleY;        // 0xc
+	float m_MaxRecoilAngleZ;        // 0x10
+	float m_MinRecoilAngleZ;        // 0x14
+	float m_MaxRecoilFov;           // 0x18
+	float m_MinRecoilFov;           // 0x1c
+	bool m_RecoilFollowsDispersion; // 0x20
+	unsigned char _0x21[ 0x3 ];
+}; // size = 0x24
+
 class GunSwayData
 {
 public:
 	char _0x0000[ 1088 ];
 	float m_ShootingRecoilDecreaseScale; // 0x0440
 	float m_FirstShotRecoilMultiplier;   // 0x0444
-	__int64 m_CamerRecoilData;           // 0x0448
+	RecoilData* m_CameraRecoilData;      // 0x0448
 };                                       // Size=0x0450
 
 class LockingControllerData

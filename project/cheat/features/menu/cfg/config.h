@@ -89,7 +89,7 @@ struct variables_t {
 	/* logging */
 
 	/* misc */
-	c_add_variable( bool, misc_discord_rpc, true );
+	c_add_variable( bool, misc_unlock_all, false );
 
 	/* visuals */
 	/* world */

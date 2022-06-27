@@ -62,8 +62,6 @@ void gui::tabs::settings( )
 
 		ImGui::Checkbox( "menu fade", &c::get< bool >( vars.menu_fade ), 8 );
 
-		ImGui::Checkbox( "discord rich presence", &c::get< bool >( vars.misc_discord_rpc ), 8 );
-
 		if ( ImGui::BeginPopupModal( "confirmation##config.remove", nullptr,
 		                             ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar ) ) {
 			ImGui::Text( "are you sure you want to remove \"%s\" configuration?", current_config_name.c_str( ) );
