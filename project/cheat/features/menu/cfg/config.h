@@ -52,12 +52,17 @@ struct variable_object_t {
 namespace c
 {
 	bool init( );
+
 	bool save( std::string_view file_name );
+
 	bool load( std::string_view file_name );
+
 	void remove( const std::size_t index );
+
 	void refresh( );
 
 	std::size_t get_variable_index( const fnv1a_t name_hash );
+
 	std::filesystem::path get_working_path( );
 
 	const std::filesystem::path fs_path                   = get_working_path( );
@@ -98,6 +103,9 @@ struct variables_t {
 	/* weapon chams */
 	/* arm chams */
 	/* esp */
+	c_add_variable( bool, esp_toggle, false );
+	c_add_variable( bool, esp_enemy_toggle, false );
+
 	/* player glow */
 	/* entity glow */
 	/* misc */
