@@ -21,7 +21,6 @@ file(GLOB_RECURSE SRC
 
 
 add_library(${PROJECT_NAME} SHARED ${SRC})
-
 find_library(FREETYPE_LIBRARY freetype.lib PATHS "project/dependencies/freetype")
 
 message(${FREETYPE_LIBRARY})

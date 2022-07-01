@@ -12,7 +12,13 @@ void unlock_all( )
 	*reinterpret_cast< std::uint8_t* >( *reinterpret_cast< std::uintptr_t* >( 0x1423717C0 ) + 0x54 ) = c::get< bool >( vars.misc_unlock_all );
 }
 
+void fly( )
+{
+	// Everything here is pasted and garbage
+}
+
 void misc::impl::update( )
 {
 	unlock_all( );
+	fly( );
 }

@@ -3,13 +3,11 @@
 //
 
 #include "present.hpp"
+#include "../../../helpers/modules/modules.hpp"
 
 bool punkbuster_check( )
 {
-	static auto screenshot_module = reinterpret_cast< std::uintptr_t* >( OFFSET_SSMODULE );
-
-	if ( !IsValidPtr( screenshot_module ) )
-		return true;
+	static auto screenshot_module = g_game.pattern_scan( "48 8B 0D ? ? ? ? 48 85 C9 74 24" ).relative( 0x3 ).as< std::uintptr_t* >( );
 
 	bool status               = *reinterpret_cast< int* >( *screenshot_module + 0x14 ) != -1;
 	hooks::punkbuster_running = status;

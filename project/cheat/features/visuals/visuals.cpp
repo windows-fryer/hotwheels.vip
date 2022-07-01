@@ -3,7 +3,8 @@
 //
 
 #include "visuals.hpp"
-#include "../../../dependencies/sdk/sdk.h"
+
+#include "../../helpers/interfaces/interfaces.hpp"
 #include "../menu/cfg/config.h"
 
 void visuals::impl::update( )
@@ -11,37 +12,33 @@ void visuals::impl::update( )
 	if ( not c::get< bool >( vars.esp_toggle ) )
 		return;
 
-	auto game_context = ClientGameContext::GetInstance( );
-
-	[[unlikely]] if ( !game_context ) return; // This should be in every sense impossible.
-
-	auto player_manager = game_context->m_pPlayerManager;
+	auto player_manager = g_interfaces.client_game_context->player_manager;
 
 	if ( !player_manager )
 		return;
 
-	auto local_player = player_manager->m_pLocalPlayer;
+	auto local_player = player_manager->local_player;
 
 	if ( !local_player )
 		return;
 
-	auto local_solider = local_player->GetSoldier( );
-
-	if ( !local_solider )
-		return;
-
-	[[likely]] if ( !local_solider->IsAlive( ) ) return;
-
-	for ( int index = 0; index < MAX_PLAYERS; index++ ) {
-		auto player = player_manager->m_ppPlayers[ index ]; // Nice hungarian notation sdk developers. m_pp??
-
-		if ( !player )
-			continue;
-
-		if ( player == local_player )
-			continue;
-
-		bool teammate   = player->m_TeamId == local_player->m_TeamId;
-		bool squad_mate = player->m_SquadId1 == local_player->m_SquadId1;
-	}
+//	auto local_solider = local_player->GetSoldier( );
+//
+//	if ( !local_solider )
+//		return;
+//
+//	[[likely]] if ( !local_solider->IsAlive( ) ) return;
+//
+//	for ( int index = 0; index < 70; index++ ) {
+//		auto player = player_manager->players[ index ]; // Made sdk this time
+//
+//		if ( !player )
+//			continue;
+//
+//		if ( player == local_player )
+//			continue;
+//
+//		bool teammate   = player->team_id == local_player->team_id;
+//		bool squad_mate = player->squad_id == local_player->squad_id;
+//	}
 }

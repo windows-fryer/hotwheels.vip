@@ -95,6 +95,8 @@ struct variables_t {
 
 	/* misc */
 	c_add_variable( bool, misc_unlock_all, false );
+	c_add_variable( bool, misc_fly, false );
+	c_add_variable( float, misc_fly_speed, 50.f );
 
 	/* visuals */
 	/* world */

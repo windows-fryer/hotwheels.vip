@@ -6,12 +6,16 @@
 #include "../entry.hpp"
 
 #include "helpers/console/console.hpp"
+#include "helpers/interfaces/interfaces.hpp"
+#include "helpers/modules/modules.hpp"
 #include "hooks/hooks.hpp"
 
 void cheat::impl::init( )
 {
+	modules::init( );
+	g_interfaces.init( );
 	console::init( );
-	g_hooks.init( );
+	hooks::impl::init( );
 
 	while ( !GetAsyncKeyState( VK_DELETE ) ) {
 		Sleep( 15 );

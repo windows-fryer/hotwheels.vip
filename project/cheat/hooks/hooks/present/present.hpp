@@ -7,8 +7,10 @@
 
 #include <d3d11.h>
 
-#include "../../../dependencies/sdk/sdk.h"
 #include "../../../features/menu/gui/gui.h"
+#include "../../../helpers/interfaces/interfaces.hpp"
+#include "../../../helpers/vfunc/vfunc.hpp"
+#include "../../../sdk/include.hpp"
 #include "../../hooks.hpp"
 
 namespace hooks
@@ -25,9 +27,9 @@ namespace hooks
 
 		static void init( )
 		{
-			gui::init( DxRenderer::GetInstance( )->m_pDevice, DxRenderer::GetInstance( )->m_pContext );
+			gui::init( g_interfaces.directx_renderer->device, g_interfaces.directx_renderer->context );
 
-			present_hook.create( ( *reinterpret_cast< void*** >( DxRenderer::GetInstance( )->m_pScreen->m_pSwapChain ) )[ 8 ], present_detour,
+			present_hook.create( g_vfunc.get_virtual_function_index( g_interfaces.directx_renderer->screen->swap_chain, 0x8 ), present_detour,
 			                     "present_detour" );
 		}
 

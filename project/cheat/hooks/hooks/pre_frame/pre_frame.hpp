@@ -5,7 +5,7 @@
 #ifndef HOTWHEELS_BF4_PRE_FRAME_HPP
 #define HOTWHEELS_BF4_PRE_FRAME_HPP
 
-#include "../../../../dependencies/sdk/sdk.h"
+#include "../../../helpers/interfaces/interfaces.hpp"
 #include "../../../helpers/vfunc/vfunc.hpp"
 #include "../../hooks.hpp"
 
@@ -31,8 +31,8 @@ namespace hooks
 
 		static void init( )
 		{
-			hook_virtual( reinterpret_cast< PDWORD64* >( BorderInputNode::GetInstance( )->m_Vtable ), reinterpret_cast< PBYTE >( &pre_frame_detour ),
-			              3, original_pre_frame_update );
+			hook_virtual( reinterpret_cast< PDWORD64* >( g_interfaces.border_input_node->vtable ), reinterpret_cast< PBYTE >( &pre_frame_detour ), 3,
+			              original_pre_frame_update );
 
 			console::log( "[HOOKS-VMT] " );
 
@@ -43,7 +43,7 @@ namespace hooks
 		{
 			std::uintptr_t* buffer{ };
 
-			hook_virtual( reinterpret_cast< PDWORD64* >( BorderInputNode::GetInstance( )->m_Vtable ),
+			hook_virtual( reinterpret_cast< PDWORD64* >( g_interfaces.border_input_node->vtable ),
 			              reinterpret_cast< PBYTE >( &*original_pre_frame_update ), 3, buffer );
 		}
 	};
