@@ -124,12 +124,6 @@ void overlay::init( )
 	ImVec4* colors = ImGui::GetStyle( ).Colors;
 	ImFontConfig verdana_font_config{ };
 
-	verdana_font_config.FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_Monochrome | ImGuiFreeTypeBuilderFlags_MonoHinting;
-
-	io.IniFilename = nullptr;
-
-	io.Fonts->AddFontDefault( );
-
 	static const ImWchar ranges[] = {
 		0x0020, 0x00FF, // Basic Latin + Latin Supplement
 		0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
@@ -140,16 +134,24 @@ void overlay::init( )
 		0,
 	};
 
+	verdana_font_config.FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_Monochrome | ImGuiFreeTypeBuilderFlags_MonoHinting;
+	verdana_font_config.GlyphRanges = ranges;
+
+	io.IniFilename = nullptr;
+
+	io.Fonts->AddFontDefault( &verdana_font_config );
+
 	visuals::font = io.Fonts->AddFontFromFileTTF( "C:\\Windows\\Fonts\\verdanab.ttf", 11.f, &verdana_font_config, ranges );
 
 	verdana_font_config.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_Monochrome;
 
-	visuals::font_indicator = io.Fonts->AddFontFromMemoryTTF( smallest_pixel_font, sizeof( smallest_pixel_font ), 10.f, &verdana_font_config, ranges );
+	visuals::font_indicator =
+		io.Fonts->AddFontFromMemoryTTF( smallest_pixel_font, sizeof( smallest_pixel_font ), 10.f, &verdana_font_config, ranges );
 
 	verdana_font_config.PixelSnapH  = true;
 	verdana_font_config.OversampleH = verdana_font_config.OversampleV = 1;
 	verdana_font_config.RasterizerMultiply                            = 2.f;
-	verdana_font_config.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_MonoHinting;
+	verdana_font_config.FontBuilderFlags                              = ImGuiFreeTypeBuilderFlags_MonoHinting;
 
 	visuals::font_icons = io.Fonts->AddFontFromMemoryCompressedTTF( icons_font, icons_font_size, 14.f, &verdana_font_config );
 	ImGuiFreeType::BuildFontAtlas( io.Fonts, 0x0 );

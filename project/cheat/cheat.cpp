@@ -12,6 +12,8 @@
 #include "features/changer/changer.hpp"
 #include "features/movement/movement.hpp"
 
+#include "../entry.hpp"
+
 #include <chrono>
 #include <thread>
 
@@ -30,7 +32,9 @@ void cheat::init( )
 		std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
 	}
 
-	driver::init( process_id );
+	std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+
+	driver::init( reinterpret_cast< HANDLE >( process_id ) );
 
 	// Fuck off operations
 	create_thread( overlay::init );
@@ -42,12 +46,11 @@ void cheat::init( )
 		Sleep( 10 );
 	}
 
-	cheat::shutdown( );
-}
-
-void cheat::shutdown( )
-{
-	// Basically not needed, why free memory when windows do it for us 😊
-
 	requested_shutdown = true;
+
+	std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+
+	free_library_and_exit_thread( cheat::module_handle, 0 );
 }
+
+void cheat::shutdown( ) { }

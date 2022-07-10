@@ -166,8 +166,6 @@ void visuals::routine( )
 			auto color = *g_config.find< ImVec4 >( "visuals_weapons_color" );
 			auto icons = *g_config.find< bool >( "visuals_weapons_icons" );
 
-			ImGui::PushFont( icons ? font_icons : font_indicator );
-
 			const char* item_icons[] = { "`", // 0 - default
 				                         "B",    "C",    "D",    "E",    "none", "none", "F",    "G",    "H",
 
@@ -287,33 +285,38 @@ void visuals::routine( )
 				                         "Diversion Device",
 				                         "Frag Grenade" };
 
-			auto text = item_names[ player->get_weapon( )->weapon_id( ) ];
-			auto icon = item_icons[ player->get_weapon( )->weapon_id( ) ];
+			if ( player->get_weapon( ) && player->get_weapon( )->weapon_id( ) && player->get_weapon( )->weapon_id( ) < 84 &&
+			     player->get_weapon( )->weapon_id( ) > -1 ) {
+				ImGui::PushFont( icons ? font_icons : font_indicator );
 
-			auto text_size     = ImGui::CalcTextSize( icons ? icon : text );
-			auto text_position = ImVec2( box.first.x + ( box.first.z - box.first.x ) / 2 - ( text_size.x / 2 ), box.first.w + ( icons ? 2 : 0 ) );
+				auto text = item_names[ player->get_weapon( )->weapon_id( ) ];
+				auto icon = item_icons[ player->get_weapon( )->weapon_id( ) ];
 
-			draw_list->AddText( ImVec2( text_position.x + 1, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x - 1, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x + 1, text_position.y - 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x - 1, text_position.y - 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
+				auto text_size     = ImGui::CalcTextSize( icons ? icon : text );
+				auto text_position = ImVec2( box.first.x + ( box.first.z - box.first.x ) / 2 - ( text_size.x / 2 ), box.first.w + ( icons ? 2 : 0 ) );
 
-			draw_list->AddText( ImVec2( text_position.x, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x + 1, text_position.y ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
-			draw_list->AddText( ImVec2( text_position.x - 1, text_position.y ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
-			                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x + 1, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x - 1, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x + 1, text_position.y - 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x - 1, text_position.y - 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
 
-			draw_list->AddText( text_position, ImGui::GetColorU32( color ), icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x, text_position.y + 1 ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x + 1, text_position.y ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
+				draw_list->AddText( ImVec2( text_position.x - 1, text_position.y ), ImGui::GetColorU32( ImVec4( 0.f, 0.f, 0.f, color.w - 0.5f ) ),
+				                    icons ? icon : text );
 
-			ImGui::PopFont( );
+				draw_list->AddText( text_position, ImGui::GetColorU32( color ), icons ? icon : text );
+
+				ImGui::PopFont( );
+			}
 		}
 
 		if ( *g_config.find< bool >( "visuals_health_bars" ) ) {

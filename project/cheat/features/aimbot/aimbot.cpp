@@ -16,11 +16,12 @@
 
 void aimbot::routine( )
 {
-	static auto client_dll = driver::base_address( "client.dll" );
-	static auto engine_dll = driver::base_address( "engine.dll" );
+	static auto client_dll    = driver::base_address( "client.dll" );
+	static auto engine_dll    = driver::base_address( "engine.dll" );
+	static auto window_handle = FindWindowA( "Valve001", nullptr );
 	static sdk::vector last_aim_punch{ };
 
-	while ( true ) {
+	while ( !cheat::requested_shutdown ) {
 		auto player = sdk::game::local_player( );
 
 		if ( !player )
@@ -33,7 +34,7 @@ void aimbot::routine( )
 		sdk::vector adjusted_angles = { aim_punch.x * ( *g_config.find< float >( "aimbot_rcs_y" ) / 100.f ),
 			                            aim_punch.y * ( *g_config.find< float >( "aimbot_rcs_x" ) / 100.f ) };
 
-		if ( GetAsyncKeyState( VK_LBUTTON ) ) {
+		if ( GetAsyncKeyState( VK_LBUTTON ) && GetForegroundWindow( ) == window_handle) {
 			sdk::vector random_angles = { static_cast< float >( rand( ) * 1000 % 10 ) / 10, static_cast< float >( rand( ) * 1000 % 10 ) / 10.f };
 
 			if ( *g_config.find< bool >( "aimbot_rcs" ) ) {

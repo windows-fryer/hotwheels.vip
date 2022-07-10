@@ -16,12 +16,13 @@
 
 void movement::routine( )
 {
-	static auto client_dll = driver::base_address( "client.dll" );
-	static auto engine_dll = driver::base_address( "engine.dll" );
+	static auto client_dll    = driver::base_address( "client.dll" );
+	static auto engine_dll    = driver::base_address( "engine.dll" );
+	static auto window_handle = FindWindowA( "Valve001", nullptr );
 
 	while ( !cheat::requested_shutdown ) {
 		if ( *g_config.find< bool >( "movement_bunny_hop" ) ) {
-			if ( GetAsyncKeyState( VK_SPACE ) ) {
+			if ( GetAsyncKeyState( VK_SPACE ) && GetForegroundWindow( ) == window_handle ) {
 				auto player = sdk::game::local_player( );
 				auto flags  = player->flags( );
 
