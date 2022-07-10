@@ -5,6 +5,8 @@
 #include "entry.hpp"
 #include "cheat/cheat.hpp"
 
+#include <Windows.h>
+
 int main( )
 {
 #ifndef _DEBUG

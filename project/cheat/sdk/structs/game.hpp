@@ -12,7 +12,7 @@ namespace sdk
 	struct game {
 		static player* local_player( );
 
-		static player* get_player( int index );
+		static player* get_entity( int index );
 	};
 } // namespace sdk
 

@@ -24,5 +24,11 @@ add_executable(${PROJECT_NAME} ${SRC})
 
 find_library(D3D11_LIBRARY d3d11.lib PATHS "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64")
 find_library(DXGI_LIBRARY dxgi.lib PATHS "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.22621.0\\um\\x64")
+find_library(FREETYPE_LIBRARY freetype.lib PATHS "project/dependencies/freetype")
 
 target_link_libraries(${PROJECT_NAME} "${D3D11_LIBRARY}" "${DXGI_LIBRARY}")
+target_link_libraries(${PROJECT_NAME} "${FREETYPE_LIBRARY}")
+
+target_link_directories(${PROJECT_NAME} PRIVATE "project/dependencies/freetype")
+
+target_include_directories(${PROJECT_NAME} PRIVATE "project/dependencies/freetype/include")

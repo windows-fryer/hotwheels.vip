@@ -13,7 +13,8 @@ sdk::player* sdk::game::local_player( )
 
 	return reinterpret_cast< sdk::player* >( driver::read< std::uint32_t >( reinterpret_cast< PVOID >( client_dll + offsets::local_player ) ) );
 }
-sdk::player* sdk::game::get_player( int index )
+
+sdk::player* sdk::game::get_entity( int index )
 {
 	static auto client_dll = driver::base_address( "client.dll" );
 

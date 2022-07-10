@@ -102,3 +102,29 @@ void config::impl::insert( std::string string, option _option )
 {
 	settings.insert( std::make_pair( fnv( string.c_str( ) ), _option ) );
 }
+
+void config::impl::init( )
+{
+	insert( "menu_open_smooth", true );
+
+	insert( "aimbot_rcs", false );
+	insert( "aimbot_rcs_x", 100.f );
+	insert( "aimbot_rcs_y", 100.f );
+	insert( "aimbot_rcs_smooth", 0.f );
+	insert( "aimbot_rcs_error", true );
+
+	insert( "visuals_boxes", false );
+	insert( "visuals_boxes_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
+	insert( "visuals_names", false );
+	insert( "visuals_names_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
+	insert( "visuals_weapons", false );
+	insert( "visuals_weapons_icons", false );
+	insert( "visuals_weapons_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
+	insert( "visuals_health_bars", false );
+	insert( "visuals_health_bars_color", ImVec4( 0.f, 1.f, 0.f, 1.f ) );
+
+	insert( "visuals_recoil_crosshair", false );
+	insert( "visuals_recoil_crosshair_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
+
+	insert( "movement_bunny_hop", false );
+}

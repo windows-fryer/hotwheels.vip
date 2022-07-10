@@ -5,6 +5,8 @@
 #ifndef HOTWHEELS_CSGO_EXTERNAL_MATH_HPP
 #define HOTWHEELS_CSGO_EXTERNAL_MATH_HPP
 
+#define NOMINMAX
+
 #include <cmath>
 #include <directxmath.h>
 

@@ -68,6 +68,8 @@ namespace config
 	struct impl {
 		std::unordered_map< std::int32_t, option > settings{ };
 
+		void init( );
+
 		void save( std::string path );
 		void load( std::string path );
 

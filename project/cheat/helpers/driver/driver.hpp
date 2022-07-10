@@ -65,6 +65,20 @@ namespace driver
 		return temporary_memory;
 	}
 
+	inline void read( PVOID address, PVOID buffer, int bytes )
+	{
+		READ_MEMORY_CALLBACK_INPUT read_memory_callback_input{ };
+		DWORD bytes_returned{ };
+
+		read_memory_callback_input.memory_pointer = buffer;
+		read_memory_callback_input.pid            = process_pid;
+		read_memory_callback_input.address        = reinterpret_cast< PVOID >( address );
+		read_memory_callback_input.size           = bytes;
+
+		DeviceIoControl( device_handle, IOCTL_READ_MEMORY, &read_memory_callback_input, sizeof( read_memory_callback_input ),
+		                 &read_memory_callback_input, sizeof( read_memory_callback_input ), &bytes_returned, nullptr );
+	}
+
 	template< typename T >
 	inline bool write( void* address, T value )
 	{

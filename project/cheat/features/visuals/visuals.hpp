@@ -14,6 +14,10 @@
 
 namespace visuals
 {
+	inline ImFont* font;
+	inline ImFont* font_icons;
+	inline ImFont* font_indicator;
+
 	void routine( );
 }
 

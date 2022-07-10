@@ -3,8 +3,11 @@
 //
 
 #include "math.hpp"
-#include "../../sdk/structs/offsets.hpp"
+
+#include "../../features/overlay/overlay.hpp"
 #include "../driver/driver.hpp"
+
+#include "../../sdk/structs/offsets.hpp"
 
 void math::angle_to_vector( const sdk::vector& angle, sdk::vector* forward, sdk::vector* right, sdk::vector* up )
 {
@@ -124,7 +127,7 @@ std::pair< sdk::vector, bool > math::world_to_screen( sdk::vector position )
 	screen.x = ( matrix[ 0 ][ 0 ] * position.x + matrix[ 0 ][ 1 ] * position.y + matrix[ 0 ][ 2 ] * position.z + matrix[ 0 ][ 3 ] ) * inverse;
 	screen.y = ( matrix[ 1 ][ 0 ] * position.x + matrix[ 1 ][ 1 ] * position.y + matrix[ 1 ][ 2 ] * position.z + matrix[ 1 ][ 3 ] ) * inverse;
 
-	auto screen_size = sdk::vector{ 1920, 1080 };
+	auto screen_size = sdk::vector{ static_cast< float >( overlay::screen_w ), static_cast< float >( overlay::screen_h ) };
 
 	screen.x = ( screen_size.x * 0.5f ) + ( screen.x * screen_size.x ) * 0.5f;
 	screen.y = ( screen_size.y * 0.5f ) - ( screen.y * screen_size.y ) * 0.5f;

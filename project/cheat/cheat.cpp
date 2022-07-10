@@ -9,47 +9,34 @@
 #include "helpers/driver/driver.hpp"
 
 #include "features/aimbot/aimbot.hpp"
+#include "features/changer/changer.hpp"
 #include "features/movement/movement.hpp"
 
-#include <Windows.h>
-#include <iostream>
+#include <chrono>
+#include <thread>
 
 void cheat::init( )
 {
-	// Config stuff
-	g_config.insert( "menu_open_smooth", true );
+	g_config.init( );
 
-	g_config.insert( "aimbot_rcs", false );
-	g_config.insert( "aimbot_rcs_x", 100.f );
-	g_config.insert( "aimbot_rcs_y", 100.f );
-	g_config.insert( "aimbot_rcs_smooth", 0.f );
-	g_config.insert( "aimbot_rcs_error", true );
-
-	g_config.insert( "visuals_boxes", false );
-	g_config.insert( "visuals_boxes_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
-
-	g_config.insert( "visuals_recoil_crosshair", false );
-	g_config.insert( "visuals_recoil_crosshair_color", ImVec4( 1.f, 1.f, 1.f, 1.f ) );
-
-	g_config.insert( "movement_bunny_hop", false );
-
-	// Actually important threadsafe operations
-	DWORD process_id{ };
-
-	GetWindowThreadProcessId( FindWindow( "Valve001", NULL ), &process_id );
+	HANDLE process_id{ };
 
 	while ( !process_id ) {
-		GetWindowThreadProcessId( FindWindow( "Valve001", NULL ), &process_id );
+		GetWindowThreadProcessId( FindWindow( "Valve001", nullptr ), reinterpret_cast< LPDWORD >( &process_id ) );
 
-		Sleep( 10 );
+		if ( process_id )
+			break;
+
+		std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
 	}
 
-	driver::init( reinterpret_cast< HANDLE >( process_id ) );
+	driver::init( process_id );
 
 	// Fuck off operations
-	CreateThread( nullptr, 0, reinterpret_cast< LPTHREAD_START_ROUTINE >( overlay::init ), nullptr, 0, nullptr );
-	CreateThread( nullptr, 0, reinterpret_cast< LPTHREAD_START_ROUTINE >( movement::routine ), nullptr, 0, nullptr );
-	CreateThread( nullptr, 0, reinterpret_cast< LPTHREAD_START_ROUTINE >( aimbot::routine ), nullptr, 0, nullptr );
+	create_thread( overlay::init );
+	create_thread( movement::routine );
+	create_thread( aimbot::routine );
+	create_thread( changer::routine );
 
 	while ( !GetAsyncKeyState( VK_DELETE ) ) {
 		Sleep( 10 );

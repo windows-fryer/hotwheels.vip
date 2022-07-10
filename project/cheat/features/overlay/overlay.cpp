@@ -7,13 +7,12 @@
 
 #include "../../cheat.hpp"
 #include "../../helpers/configs/config.hpp"
-#include "../../helpers/driver/driver.hpp"
+#include "../menu/menu.hpp"
 
-#include <Windows.h>
 #include <algorithm>
+#include <chrono>
 #include <dwmapi.h>
-#include <iostream>
-#include <shlobj.h>
+#include <thread>
 
 void create_render_target( )
 {
@@ -96,13 +95,21 @@ void overlay::init( )
 
 	RegisterClassEx( &wnd_class );
 
-	HWND window_handle = CreateWindowEx( WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW, wnd_class.lpszClassName, "", WS_POPUP, 0, 0, 1920,
-	                                     1080, nullptr, nullptr, nullptr, nullptr );
+	RECT desktop_size;
+
+	HWND desktop = GetDesktopWindow( );
+	GetWindowRect( desktop, &desktop_size );
+
+	screen_w = desktop_size.right;
+	screen_h = desktop_size.bottom;
+
+	HWND window_handle = CreateWindowEx( WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW, wnd_class.lpszClassName, "", WS_POPUP, 0, 0, screen_w,
+	                                     screen_h, nullptr, nullptr, nullptr, nullptr );
 
 	SetLayeredWindowAttributes( window_handle, 0, 255, LWA_ALPHA );
 	SetLayeredWindowAttributes( window_handle, RGB( 0, 0, 0 ), 0, ULW_COLORKEY );
 
-	MARGINS margin = { 0, 1920, 0, 1080 };
+	MARGINS margin = { 0, screen_w, 0, screen_h };
 
 	DwmExtendFrameIntoClientArea( window_handle, &margin );
 
@@ -115,8 +122,37 @@ void overlay::init( )
 
 	ImGuiIO& io    = ImGui::GetIO( );
 	ImVec4* colors = ImGui::GetStyle( ).Colors;
+	ImFontConfig verdana_font_config{ };
+
+	verdana_font_config.FontBuilderFlags |= ImGuiFreeTypeBuilderFlags_Monochrome | ImGuiFreeTypeBuilderFlags_MonoHinting;
 
 	io.IniFilename = nullptr;
+
+	io.Fonts->AddFontDefault( );
+
+	static const ImWchar ranges[] = {
+		0x0020, 0x00FF, // Basic Latin + Latin Supplement
+		0x0400, 0x052F, // Cyrillic + Cyrillic Supplement
+		0x2DE0, 0x2DFF, // Cyrillic Extended-A
+		0xA640, 0xA69F, // Cyrillic Extended-B
+		0x3131, 0x3163, // Korean alphabets
+		0xAC00, 0xD79D, // Korean characters
+		0,
+	};
+
+	visuals::font = io.Fonts->AddFontFromFileTTF( "C:\\Windows\\Fonts\\verdanab.ttf", 11.f, &verdana_font_config, ranges );
+
+	verdana_font_config.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_Monochrome;
+
+	visuals::font_indicator = io.Fonts->AddFontFromMemoryTTF( smallest_pixel_font, sizeof( smallest_pixel_font ), 10.f, &verdana_font_config, ranges );
+
+	verdana_font_config.PixelSnapH  = true;
+	verdana_font_config.OversampleH = verdana_font_config.OversampleV = 1;
+	verdana_font_config.RasterizerMultiply                            = 2.f;
+	verdana_font_config.FontBuilderFlags = ImGuiFreeTypeBuilderFlags_MonoHinting;
+
+	visuals::font_icons = io.Fonts->AddFontFromMemoryCompressedTTF( icons_font, icons_font_size, 14.f, &verdana_font_config );
+	ImGuiFreeType::BuildFontAtlas( io.Fonts, 0x0 );
 
 	colors[ ImGuiCol_Text ]                  = ImVec4( 1.00f, 1.00f, 1.00f, 1.00f );
 	colors[ ImGuiCol_TextDisabled ]          = ImVec4( 0.50f, 0.50f, 0.50f, 1.00f );
@@ -125,18 +161,18 @@ void overlay::init( )
 	colors[ ImGuiCol_PopupBg ]               = ImVec4( 0.08f, 0.08f, 0.08f, 0.94f );
 	colors[ ImGuiCol_Border ]                = ImVec4( 0.43f, 0.43f, 0.50f, 0.50f );
 	colors[ ImGuiCol_BorderShadow ]          = ImVec4( 0.00f, 0.00f, 0.00f, 0.00f );
-	colors[ ImGuiCol_FrameBg ]               = ImVec4( 1.00f, 0.60f, 0.92f, 0.54f );
-	colors[ ImGuiCol_FrameBgHovered ]        = ImVec4( 1.00f, 0.49f, 0.90f, 0.54f );
-	colors[ ImGuiCol_FrameBgActive ]         = ImVec4( 1.00f, 0.43f, 0.88f, 0.54f );
+	colors[ ImGuiCol_FrameBg ]               = ImVec4( 0.23f, 0.23f, 0.23f, 0.54f );
+	colors[ ImGuiCol_FrameBgHovered ]        = ImVec4( 0.25f, 0.25f, 0.25f, 0.54f );
+	colors[ ImGuiCol_FrameBgActive ]         = ImVec4( 0.19f, 0.19f, 0.19f, 0.54f );
 	colors[ ImGuiCol_TitleBg ]               = ImVec4( 0.04f, 0.04f, 0.04f, 1.00f );
-	colors[ ImGuiCol_TitleBgActive ]         = ImVec4( 1.00f, 0.62f, 0.92f, 0.54f );
+	colors[ ImGuiCol_TitleBgActive ]         = ImVec4( 0.67f, 0.39f, 0.61f, 1.00f );
 	colors[ ImGuiCol_TitleBgCollapsed ]      = ImVec4( 0.00f, 0.00f, 0.00f, 0.51f );
 	colors[ ImGuiCol_MenuBarBg ]             = ImVec4( 0.14f, 0.14f, 0.14f, 1.00f );
 	colors[ ImGuiCol_ScrollbarBg ]           = ImVec4( 0.02f, 0.02f, 0.02f, 0.53f );
 	colors[ ImGuiCol_ScrollbarGrab ]         = ImVec4( 0.31f, 0.31f, 0.31f, 1.00f );
 	colors[ ImGuiCol_ScrollbarGrabHovered ]  = ImVec4( 0.41f, 0.41f, 0.41f, 1.00f );
 	colors[ ImGuiCol_ScrollbarGrabActive ]   = ImVec4( 0.51f, 0.51f, 0.51f, 1.00f );
-	colors[ ImGuiCol_CheckMark ]             = ImVec4( 1.00f, 0.87f, 0.97f, 0.54f );
+	colors[ ImGuiCol_CheckMark ]             = ImVec4( 0.87f, 0.55f, 0.80f, 1.00f );
 	colors[ ImGuiCol_SliderGrab ]            = ImVec4( 1.00f, 0.60f, 0.92f, 0.54f );
 	colors[ ImGuiCol_SliderGrabActive ]      = ImVec4( 1.00f, 0.60f, 0.92f, 0.54f );
 	colors[ ImGuiCol_Button ]                = ImVec4( 1.00f, 0.60f, 0.92f, 0.54f );
@@ -220,8 +256,6 @@ void overlay::init( )
 
 		auto ease_animation = ease_in_out( current_animation );
 
-		//		ImGui::GetStyle( ).AntiAliasedLines = false;
-
 		visuals::routine( );
 
 		ImGui::PushStyleVar( ImGuiStyleVar_Alpha, ease_animation );
@@ -229,87 +263,7 @@ void overlay::init( )
 		if ( open || current_animation > increment_per_frame * 2 ) {
 			did_close = false;
 
-			float current_position = 0.f;
-
-			ImGui::SetNextWindowSize( ImVec2( 175, 0 ) );
-			ImGui::SetNextWindowPos( ImVec2( 10.f + ( 5.f + 175.f ) * current_position++ * ease_animation, 10 ) );
-			if ( ImGui::Begin( "Aimbot", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) ) {
-				ImGui::Checkbox( "RCS", g_config.find< bool >( "aimbot_rcs" ) );
-
-				if ( *g_config.find< bool >( "aimbot_rcs" ) ) {
-					ImGui::PushItemWidth( -1 );
-					ImGui::SliderFloat( "##RCS X", g_config.find< float >( "aimbot_rcs_x" ), 0, 150.f, "X: %0.1f%" );
-					ImGui::SliderFloat( "##RCS Y", g_config.find< float >( "aimbot_rcs_y" ), 0, 150.f, "Y: %0.1f%" );
-					ImGui::SliderFloat( "##RCS SMOOTH", g_config.find< float >( "aimbot_rcs_smooth" ), 0, 2.f, "Smooth: %0.1f%" );
-
-					ImGui::PopItemWidth( );
-
-					ImGui::Checkbox( "RCS Error", g_config.find< bool >( "aimbot_rcs_error" ) );
-				}
-
-				ImGui::End( );
-			}
-
-			ImGui::SetNextWindowSize( ImVec2( 175, 0 ) );
-			ImGui::SetNextWindowPos( ImVec2( 10.f + ( 5.f + 175.f ) * current_position++ * ease_animation, 10 ) );
-			if ( ImGui::Begin( "Visuals", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) ) {
-				ImGui::Checkbox( "Boxes", g_config.find< bool >( "visuals_boxes" ) );
-				ImGui::SameLine( );
-
-				ImGui::ColorEdit4( "##Boxes Color",
-				                   reinterpret_cast< float* >( g_config.find< ImVec4 >( "visuals_boxes_color" ) ),
-				                   ImGuiColorEditFlags_NoInputs );
-
-				ImGui::Checkbox( "Recoil Crosshair", g_config.find< bool >( "visuals_recoil_crosshair" ) );
-				ImGui::SameLine( );
-
-				ImGui::ColorEdit4( "##Recoil Crosshair Color",
-				                   reinterpret_cast< float* >( g_config.find< ImVec4 >( "visuals_recoil_crosshair_color" ) ),
-				                   ImGuiColorEditFlags_NoInputs );
-
-				ImGui::End( );
-			}
-
-			ImGui::SetNextWindowSize( ImVec2( 175, 0 ) );
-			ImGui::SetNextWindowPos( ImVec2( 10.f + ( 5.f + 175.f ) * current_position++ * ease_animation, 10 ) );
-			if ( ImGui::Begin( "Movement", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) ) {
-				ImGui::Checkbox( "Bunny Hop", g_config.find< bool >( "movement_bunny_hop" ) );
-
-				ImGui::End( );
-			}
-
-			ImGui::SetNextWindowSize( ImVec2( 175, 0 ) );
-			ImGui::SetNextWindowPos( ImVec2( 10.f + ( 5.f + 175.f ) * current_position++ * ease_animation, 10 ) );
-			if ( ImGui::Begin( "Misc", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) ) {
-				ImGui::Checkbox( "Smooth Open", g_config.find< bool >( "menu_open_smooth" ) );
-
-				ImGui::End( );
-			}
-
-			ImGui::SetNextWindowSize( ImVec2( 175, 0 ) );
-			ImGui::SetNextWindowPos( ImVec2( 10.f + ( 5.f + 175.f ) * current_position++ * ease_animation, 10 ) );
-			if ( ImGui::Begin( "Configs", nullptr, ImGuiWindowFlags_AlwaysAutoResize ) ) {
-				static CHAR my_documents[ MAX_PATH ]{ };
-				static HRESULT result = SHGetFolderPath( NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents );
-
-				if ( result == S_OK ) {
-					static char config_name[ 64 ]{ };
-
-					ImGui::PushItemWidth( -1 );
-					ImGui::InputText( "##config_name", config_name, 64 );
-					ImGui::PopItemWidth( );
-
-					if ( ImGui::Button( "Save", ImVec2( ImGui::GetWindowSize( ).x * 0.43f, 0 ) ) ) {
-						g_config.save( std::string( my_documents ) + "/hotwheels/" + std::string( config_name ) + std::string( ".vip" ) );
-					}
-					ImGui::SameLine( );
-					if ( ImGui::Button( "Load", ImVec2( ImGui::GetWindowSize( ).x * 0.43f, 0 ) ) ) {
-						g_config.load( std::string( my_documents ) + "/hotwheels/" + std::string( config_name ) + std::string( ".vip" ) );
-					}
-				}
-
-				ImGui::End( );
-			}
+			menu::routine( ease_animation );
 		} else {
 			did_close = true;
 		}
@@ -323,12 +277,12 @@ void overlay::init( )
 		ImGui::Render( );
 
 		const float clear_color_with_alpha[ 4 ] = { 0, 0, 0, 0 };
-		device_context->OMSetRenderTargets( 1, &render_target_view, NULL );
+		device_context->OMSetRenderTargets( 1, &render_target_view, nullptr );
 		device_context->ClearRenderTargetView( render_target_view, clear_color_with_alpha );
 		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData( ) );
 
 		swap_chain->Present( 0, 0 );
 
-		Sleep( 6.9f );
+		std::this_thread::sleep_for( std::chrono::milliseconds( static_cast< int >( 1.f / 400.f * 1000.f ) ) );
 	}
 }
